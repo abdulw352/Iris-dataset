@@ -6,7 +6,7 @@ from joblib import load
 # Load the trained models and scaler
 knn_model = load('knn_model.joblib')
 rfc_model = load('rfc_model.joblib')
-svm_model = load('svc_model.joblib')
+svc_model = load('svc_model.joblib')
 lr_model = load('lr_model.joblib')
 scaler = load('scaler.joblib')
 
