@@ -8,6 +8,7 @@ knn_model = load('knn_model.joblib')
 rfc_model = load('rfc_model.joblib')
 svc_model = load('svc_model.joblib')
 lr_model = load('lr_model.joblib')
+ensemble_model = load('ensemble_model.joblib')
 scaler = load('scaler.joblib')
 
 # Define the FastAPI app and input data model
@@ -84,6 +85,21 @@ async def lr_prediction(data: IrisData):
 
     # Make predictions using the trained Logistic Regression Classifier model
     prediction = lr_model.predict(input_data_scaled)
+
+    # map the predicted class label to a string flower name
+    flower_name = class_label_to_name[prediction[0]]
+
+    # return the predicted flower name as a JSON response
+    return {"flower_name_prediction": flower_name}
+
+@app.post("/ensemble")
+async def ensemble_prediction(data: IrisData):
+    # Scale the input data using the loaded StandardScaler
+    input_data = [[data.sepal_length, data.sepal_width, data.petal_length, data.petal_width]]
+    input_data_scaled = scaler.transform(input_data)
+
+    # Make predictions using the trained Logistic Regression Classifier model
+    prediction = ensemble_model.predict(input_data_scaled)
 
     # map the predicted class label to a string flower name
     flower_name = class_label_to_name[prediction[0]]
